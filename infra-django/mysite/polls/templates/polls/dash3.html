@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<script> 
+    
+    window.setInterval(()=> {location.reload();}, 60000);//1 segundo == 1000    
+</script>
+	<title>Volcan de Fuego</title>
+	<head lang="en">
+		<link href="https://cdn.pydata.org/bokeh/release/bokeh-1.4.0.min.css" rel=”stylesheet” type=”text/css”>
+ 		<link href="https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.4.0.min.css" rel=”stylesheet” type=”text/css”>
+		<script src="https://cdn.pydata.org/bokeh/release/bokeh-1.4.0.min.js"></script>
+ 		<script src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.4.0.min.js"></script>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" >
+
+		{{ script | safe }}
+</head>
+<body>
+	<hr>
+	<div class="container"align="center">
+	 <h1 class="text-center">Actividad Volcan de Fuego</h1>
+		{{ div | safe }}
+	</div>
+	 <div class="container" align="center">
+         <h1 class="text-center"> Imagen Infrarroja</h1>
+                <img src="https://satfuego.blob.core.windows.net/m2e1/primera.jpg" alt="Imagen Infrarroja Volcán de Fuego" width="640" height="480">
+
+        </div>
+
+	<hr>
+</body>
+</html>
