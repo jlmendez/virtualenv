@@ -5000,3 +5000,56 @@ System check identified 1 issue (0 silenced).
 [26/May/2020 20:57:31] "GET /volcanes/ HTTP/1.1" 200 25798939
 [26/May/2020 20:57:35] "GET /volcanes/ HTTP/1.1" 200 25798939
 [26/May/2020 21:17:07] "GET /volcanes/ HTTP/1.1" 200 25798939
+[28/May/2020 12:01:24] "GET /volcanes HTTP/1.1" 301 0
+[28/May/2020 12:01:32] "GET /volcanes/ HTTP/1.1" 200 25798939
+[28/May/2020 12:06:47] "GET /volcanes/ HTTP/1.1" 200 25798939
+Performing system checks...
+
+
+You have 2 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): polls.
+Run 'python manage.py migrate' to apply them.
+May 26, 2020 - 20:53:16
+Django version 2.1, using settings 'mysite.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+2020-05-22 22:50:33.818000
+2020-05-22 22:50:33.818000
+2020-05-22 22:50:33.818000
+2020-05-22 22:50:33.818000
+2020-05-22 22:50:33.818000
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W005) URL namespace 'polls' isn't unique. You may not be able to reverse all URLs in this namespace
+
+System check identified 1 issue (0 silenced).
+[28/May/2020 17:32:33] "GET /volcanes/ HTTP/1.1" 200 100423
+Performing system checks...
+
+
+You have 2 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): polls.
+Run 'python manage.py migrate' to apply them.
+May 28, 2020 - 17:32:20
+Django version 2.1, using settings 'mysite.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+2020-05-22 22:50:33.818000
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W005) URL namespace 'polls' isn't unique. You may not be able to reverse all URLs in this namespace
+
+System check identified 1 issue (0 silenced).
+[28/May/2020 17:36:02] "GET /volcanes/ HTTP/1.1" 200 100423
+[28/May/2020 19:28:40] "GET /volcanes/ HTTP/1.1" 200 100423
+Performing system checks...
+
+
+You have 2 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): polls.
+Run 'python manage.py migrate' to apply them.
+May 28, 2020 - 17:35:52
+Django version 2.1, using settings 'mysite.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+2020-05-22 22:50:33.818000
+2020-05-22 22:50:33.818000

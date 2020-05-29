@@ -8,7 +8,7 @@ from bokeh.models import ColumnDataSource, Legend, Range1d
 from bokeh.embed import components
 from django.utils import timezone
 from bokeh.models import DatetimeTickFormatter
-
+from bokeh.io import export_png
 from django.views.decorators.clickjacking import xframe_options_exempt
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -31,22 +31,83 @@ def ultimos_datos():
                 result_list.append(row_list)
         return result_list
 
-def ultima_fecha():
+def ultima_fecha(estacion):
     from django.db import connection
     with connection.cursor() as cursor:
-        cursor.execute("select max(fecha_recepcion) from polls_ise2_infra")
+        cursor.execute("select max(fecha_recepcion) from polls_{0}".format(estacion))
         for DATOS in cursor.fetchone():
             columna =DATOS
             print(columna)
     return columna
 
+def get_data():
+    xmax= ultima_fecha('ise1_infra')
+    xmax_ise1_infra = xmax
+    xmin= xmax - timedelta(seconds=30)
+    xmin_ise1_infra = xmin
+    df1 = pd.DataFrame(list(ISE1_INFRA.objects.filter(fecha_recepcion__range=(xmin,xmax)).values('fecha_recepcion','infrasonido_1','infrasonido_2','infrasonido_3','infrasonido_4').order_by('fecha_recepcion')))
+#------------
+
+    xmax= ultima_fecha('ise2_infra')
+    xmax_ise2_infra = xmax
+    xmin= xmax - timedelta(seconds=30)
+    xmin_ise2_infra = xmin
+    df2 = pd.DataFrame(list(ISE2_INFRA.objects.filter(fecha_recepcion__range=(xmin,xmax)).values('fecha_recepcion','infrasonido_1','infrasonido_2','infrasonido_3','infrasonido_4').order_by('fecha_recepcion')))
+    print(df2)
+#------------
+    xmax= ultima_fecha('e1ms1')
+    xmax_e1ms1 = xmax
+    xmin= xmax - timedelta(seconds=30)
+    xmin_e1ms1 = xmin
+    df3 = pd.DataFrame(list(E1MS1.objects.filter(fecha_recepcion__range=(xmin,xmax)).values('fecha_recepcion','infrasonido_1','infrasonido_2','infrasonido_3','infrasonido_4').order_by('fecha_recepcion')))
+#------------
+    return df1, df2, df3, xmin_ise1_infra, xmax_ise1_infra, xmin_ise2_infra, xmax_ise2_infra, xmin_e1ms1, xmax_e1ms1
+
+def get_plot(df, estacion, xmin, xmax):
+    source = ColumnDataSource(df)
+    p1 = figure(title = 'Data Cruda del Sensor 1  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Cuentas', x_axis_type='datetime', y_axis_type='linear', plot_width = 500, plot_height = 300)
+    p1.x_range=Range1d(xmin, xmax)
+
+    l1 = p1.line('fecha_recepcion', 'infrasonido_1', source=source, line_width=2, line_alpha=1, line_color="blue")
+
+    if estacion != 'e1ms1':
+
+        p2 = figure(title = 'Data Cruda del Sensor 2  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Cuentas', x_axis_type='datetime', y_axis_type='log', plot_width = 500, plot_height = 300)
+        p2.x_range=Range1d(xmin, xmax)
+        l2 = p2.line('fecha_recepcion', 'infrasonido_2', source=source, line_width=2, line_alpha=1, line_color="red")
+
+        p3 = figure(title = 'Data Cruda del Sensor 3 al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Cuentas', x_axis_type='datetime', y_axis_type='log', plot_width = 500, plot_height = 300)
+
+        p3.x_range=Range1d(xmin, xmax)
+
+        l3 = p3.line('fecha_recepcion', 'infrasonido_3', source=source, line_width=2, line_alpha=1, line_color="green")
+
+        p4 = figure(title = 'Data Cruda del Sensor 4  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Cuentas', x_axis_type='datetime', y_axis_type='log', plot_width = 500, plot_height = 300)
+
+        p4.x_range=Range1d(xmin, xmax)
+
+        l4 = p4.line('fecha_recepcion', 'infrasonido_4', source=source, line_width=2, line_alpha=1, line_color="orange")
+
+    if estacion != 'e1ms1':
+        plot = gridplot([[p1],[p2],[p3],[p4]])
+        script, div = components(plot)
+        return plot,script,div
+    else:
+        script, div = components(p1)
+        return p1, script,div
+        
 def homepage(request):
-    xmax = ultima_fecha()
-    d = xmax - timedelta(hours=3)
+    xmax = ultima_fecha('ise2_infra')
+    df1, df2, df3, xmin_ise1_infra, xmax_ise1_infra, xmin_ise2_infra, xmax_ise2_infra, xmin_e1ms1, xmax_e1ms1 = get_data()
+
+    d = xmax - timedelta(seconds=30)
     #d= datetime.now() - timedelta(hours=48)
     #xmax =datetime.now()
 
-    xmin =xmax-timedelta(hours=2)
+    plot1,script1,div1 = get_plot(df1, 'ise1_infra',xmin_ise1_infra, xmax_ise1_infra)
+    plot2,script2,div2 = get_plot(df2, 'ise2_infra',xmin_ise2_infra, xmax_ise2_infra)
+    plot3,script3,div3 = get_plot(df3, 'e1ms1',     xmin_e1ms1,      xmax_e1ms1)
+    xmin =xmax-timedelta(seconds=30)
 #	data_list = ultimos_datos()
 #	frame = pd.DataFrame(data_list)
 #	frame.columns= ['fecha_sistema','gxe','gye','gze','axe','aye','aze']
@@ -98,9 +159,9 @@ def homepage(request):
     #], location=(0, -30))
 
     #plot.add_layout(legend, 'right')
-    plot = gridplot([[p1,p2],[p3,p4]])
+    plot = gridplot([[p1],[p2],[p3],[p4]])
     script, div = components(plot)
     
-    return render_to_response('polls/dash.html', {'script': script, 'div': div})
+    return render_to_response('polls/dash.html', {'script1': script1, 'div1': div1,'script2': script2, 'div2': div2,'script3': script3, 'div3': div3 })
         
 

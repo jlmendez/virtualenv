@@ -88,7 +88,9 @@ body {
 }
 </style>
 
-		{{ script | safe }}
+		{{ script1 | safe }}
+		{{ script2 | safe }}
+		{{ script3 | safe }}
 </head>
 <body style="background-color:#212121; color:#f2f2f2; text-align: center;">
 	<div class="topnav" id="mytopnav">
@@ -105,24 +107,30 @@ body {
 	<hr>
 	<div class="container"align="center">
 	 <h1 class="text-center">Huella Infrasónica</h1>
-	 <h6 class="text-center">Estacion ISE2_INFRA</h6>
-		{{ div | safe }}
+	 <h6 class="text-center">Estacion ISE1_INFRA</h6>
+		{{ div1 | safe }}
 	</div>
 	<hr>
+        <hr>
+        <div class="container"align="center">
+         <h1 class="text-center">Huella Infrasónica</h1>
+         <h6 class="text-center">Estacion ISE2_INFRA</h6>
+                {{ div2 | safe }}
+        </div>
+        <hr>
+        <hr>
+        <div class="container"align="center">
+         <h1 class="text-center">Huella Infrasónica</h1>
+         <h6 class="text-center">Estacion E1MS1</h6>
+                {{ div3 | safe }}
+        </div>
+        <hr>
 
 <table style="width:100%">
    <tr> 
       <td>
-	<div class="container" align="center">
-         <h1 class="text-center"> Imagen Infrarroja</h1>
-	 <h6 class="text-center"> Estación E1MS1 Acatenango</h6>
-                <img src="https://satfuego.blob.core.windows.net/m2e1/primera.jpg" alt="Imagen Infrarroja Volcán de Fuego" width="640" height="480">
-
-        </div>
-      </td>
-      <td>
         <div class="container" align="center">
-         <h1 class="text-center"> Imagen RGB</h1>
+         <h1 class="text-center"> Imagen Infrarroja</h1>
          <h6 class="text-center"> Estación E1MS1 Acatenango</h6>
                 <img src="https://satfuego.blob.core.windows.net/m2e1/segunda.jpg" alt="Imagen RGB Volcán de Fuego" width="640" height="480">
 
