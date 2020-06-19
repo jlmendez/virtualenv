@@ -46,6 +46,19 @@ def get_data():
     xmin= xmax - timedelta(seconds=30)
     xmin_ise1_infra = xmin
     df1 = pd.DataFrame(list(ISE1_INFRA.objects.filter(fecha_recepcion__range=(xmin,xmax)).values('fecha_recepcion','infrasonido_1','infrasonido_2','infrasonido_3','infrasonido_4').order_by('fecha_recepcion')))
+    df1.infrasonido_1 = df1.infrasonido_1/89771.77326
+    df1.infrasonido_2 = df1.infrasonido_2/89771.77326
+    df1.infrasonido_3 = df1.infrasonido_3/89771.77326
+    df1.infrasonido_4 = df1.infrasonido_4/89771.77326
+    
+    dfa = df1.infrasonido_1
+    df1.infrasonido_1 = dfa.diff()
+    dfa = df1.infrasonido_2
+    df1.infrasonido_2 = dfa.diff()
+    dfa = df1.infrasonido_3
+    df1.infrasonido_3 = dfa.diff()
+    dfa = df1.infrasonido_4
+    df1.infrasonido_4 = dfa.diff()
 #------------
 
     xmax= ultima_fecha('ise2_infra')
@@ -54,35 +67,64 @@ def get_data():
     xmin_ise2_infra = xmin
     df2 = pd.DataFrame(list(ISE2_INFRA.objects.filter(fecha_recepcion__range=(xmin,xmax)).values('fecha_recepcion','infrasonido_1','infrasonido_2','infrasonido_3','infrasonido_4').order_by('fecha_recepcion')))
     print(df2)
+    df2.infrasonido_1 = df2.infrasonido_1/89771.77326
+    df2.infrasonido_2 = df2.infrasonido_2/89771.77326
+    df2.infrasonido_3 = df2.infrasonido_3/89771.77326
+    df2.infrasonido_4 = df2.infrasonido_4/89771.77326
+
+    dfa = df2.infrasonido_1
+    df2.infrasonido_1 = dfa.diff()
+    dfa = df2.infrasonido_2
+    df2.infrasonido_2 = dfa.diff()
+    dfa = df2.infrasonido_3
+    df2.infrasonido_3 = dfa.diff()
+    dfa = df2.infrasonido_4
+    df2.infrasonido_4 = dfa.diff()
 #------------
     xmax= ultima_fecha('e1ms1')
     xmax_e1ms1 = xmax
     xmin= xmax - timedelta(seconds=30)
     xmin_e1ms1 = xmin
     df3 = pd.DataFrame(list(E1MS1.objects.filter(fecha_recepcion__range=(xmin,xmax)).values('fecha_recepcion','infrasonido_1','infrasonido_2','infrasonido_3','infrasonido_4').order_by('fecha_recepcion')))
+
+    df3.infrasonido_1 = df3.infrasonido_1/89771.77326
+    df3.infrasonido_2 = df3.infrasonido_2/89771.77326
+    df3.infrasonido_3 = df3.infrasonido_3/89771.77326
+    df3.infrasonido_4 = df3.infrasonido_4/89771.77326
+
+    dfa = df3.infrasonido_1
+    df3.infrasonido_1 = dfa.diff()
+    dfa = df3.infrasonido_2
+    df3.infrasonido_2 = dfa.diff()
+    dfa = df3.infrasonido_3
+    df3.infrasonido_3 = dfa.diff()
+    dfa = df3.infrasonido_4
+    df3.infrasonido_4 = dfa.diff()
+
+    
 #------------
     return df1, df2, df3, xmin_ise1_infra, xmax_ise1_infra, xmin_ise2_infra, xmax_ise2_infra, xmin_e1ms1, xmax_e1ms1
 
 def get_plot(df, estacion, xmin, xmax):
     source = ColumnDataSource(df)
-    p1 = figure(title = 'Data Cruda del Sensor 1  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Cuentas', x_axis_type='datetime', y_axis_type='linear', plot_width = 500, plot_height = 300)
+    p1 = figure(title = 'Data Sensor 1  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Pascales', x_axis_type='datetime', y_axis_type='linear', plot_width = 800, plot_height = 150)
     p1.x_range=Range1d(xmin, xmax)
 
     l1 = p1.line('fecha_recepcion', 'infrasonido_1', source=source, line_width=2, line_alpha=1, line_color="blue")
 
     if estacion != 'e1ms1':
 
-        p2 = figure(title = 'Data Cruda del Sensor 2  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Cuentas', x_axis_type='datetime', y_axis_type='log', plot_width = 500, plot_height = 300)
+        p2 = figure(title = 'Data Sensor 2  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Pascales', x_axis_type='datetime', y_axis_type='linear', plot_width = 800, plot_height = 150)
         p2.x_range=Range1d(xmin, xmax)
         l2 = p2.line('fecha_recepcion', 'infrasonido_2', source=source, line_width=2, line_alpha=1, line_color="red")
 
-        p3 = figure(title = 'Data Cruda del Sensor 3 al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Cuentas', x_axis_type='datetime', y_axis_type='log', plot_width = 500, plot_height = 300)
+        p3 = figure(title = 'Data Sensor 3 al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Pascales', x_axis_type='datetime', y_axis_type='linear', plot_width = 800, plot_height = 150)
 
         p3.x_range=Range1d(xmin, xmax)
 
         l3 = p3.line('fecha_recepcion', 'infrasonido_3', source=source, line_width=2, line_alpha=1, line_color="green")
 
-        p4 = figure(title = 'Data Cruda del Sensor 4  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Cuentas', x_axis_type='datetime', y_axis_type='log', plot_width = 500, plot_height = 300)
+        p4 = figure(title = 'Data Sensor 4  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Pascales', x_axis_type='datetime', y_axis_type='linear', plot_width = 800, plot_height = 150)
 
         p4.x_range=Range1d(xmin, xmax)
 
