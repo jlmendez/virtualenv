@@ -32,7 +32,7 @@ except (Exception, psycopg2.Error) as error :
     
 try:
     now = datetime.now()
-    past_time = now - timedelta(days = 60)
+    past_time = now - timedelta(days = 1)
     date_time = now.strftime("%Y-%m-%d %H:%M:%S")
     date_time2 = past_time.strftime("%Y-%m-%d %H:%M:%S")
 
@@ -65,16 +65,18 @@ for r in df.iterrows():
     #print(r[1].values[0])
     urladdres = r[1].values[0]
     number_str = str(linea)
-    #urllib.request.urlretrieve(r[1].values[0], '/virtualenv/video-project/img_vf/foto{0}.jpg'.format(number_str.zfill(7))) 
+    urllib.request.urlretrieve(r[1].values[0], '/virtualenv/video-project/img_vf/foto{0}.jpg'.format(number_str.zfill(7))) 
     linea= linea +1
 
+size = (640,480)
 for filename in sorted(glob.glob('/virtualenv/video-project/img_vf/*.jpg')):
     img = cv2.imread(filename)
     #print(filename)
     height, width, layers = img.shape
     size = (width,height)
     img_array.append(img)
-    out = cv2.VideoWriter('/home/incyt/servicio/uploads/project.avi',cv2.VideoWriter_fourcc(*'XVID'), 5, size)
+#    out = cv2.VideoWriter('/home/incyt/servicio/uploads/project.avi',cv2.VideoWriter_fourcc(*'XVID'), 5, size)
+out = cv2.VideoWriter('/home/incyt/servicio/uploads/project.webm',cv2.VideoWriter_fourcc(*'vp80'), 5, size)
  
 for i in range(len(img_array)):
     out.write(img_array[i])
