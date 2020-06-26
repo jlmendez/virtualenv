@@ -132,7 +132,7 @@ body {
         <div class="container" align="center">
          <h1 class="text-center"> Imagen Infrarroja</h1>
          <h6 class="text-center"> Estación E1MS1 Acatenango</h6>
-                <img src="https://satfuego.blob.core.windows.net/m2e1/segunda.jpg" alt="Imagen RGB Volcán de Fuego" width="640" height="480">
+	 {{ img1 | safe}}
 
         </div>
 
@@ -144,10 +144,18 @@ body {
 <div class = "container" align="center">
 	<h1 class = "text-center"> Ultima Actividad registrada </h1>
 	<h6 class = "text-center"> Time Lapse a partir de fotografias fijas </h6>
+	
+	<video controls="" autoplay="" name="media"><source src="https://arcgis-web.url.edu.gt/incyt/api/HashFiles/uploads/project.webm" type="video/webm"></video>
+</div>
+<hr>
+<div class="container" align="center">
+	<h1 class = "text-center"> Consulta el  playlist en Youtube </h1>
+        <h6 class = "text-center"> Para ver el registro de actividad pasada </h6>
+
 	<iframe width="560" height="315" src="https://www.youtube.com/embed/_2voSH2_AMg?autoplay=1&autoplay=1&loop=1&playlist=_2voSH2_AMg" frameborder="0" allow="accelerometer; autoplay=1; loop=1; playlist=_2voSH2_AMg; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-	<video src="https://arcgis-web.url.edu.gt/incyt/api/HashFiles/uploads/project.mp4" width="640" height="480" />
 </div>
+<hr>
 <div class="footer">
    <table style="width:100%">
     <tr>

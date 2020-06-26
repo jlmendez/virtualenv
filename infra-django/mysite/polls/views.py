@@ -1,4 +1,5 @@
 import pandas as pd
+import psycopg2
 from datetime import datetime, timedelta 
 
 from math import pi
@@ -18,7 +19,28 @@ from django.shortcuts import get_object_or_404, render
 from .models import E1MS1, ISE1_INFRA, ISE2_INFRA
 # Create your views here.
 
+def ultima_foto():
+    try:
+        con1 = psycopg2.connect(user = "postgres",
+                               password = "postgres2020!Incyt",
+                               host = "172.17.250.12",
+                               port = "5432",
+                               database = "hashFiles")
+        cursor2 = con1.cursor()
+    except:
+        print('error de conexión')
 
+    cursor2.execute ("""select path 
+                       from filecatalog  
+                       where originalname = 'final.jpg'
+                       and fecha = (select max(fecha) from filecatalog 
+                       where originalname = 'final.jpg')""")
+ 
+    for row in cursor2.fetchone():
+            v_datos = row
+    v_tag = '<img src="{0}" alt="Imagen IR Volcán de Fuego" width="640" height="480">'.format(v_datos)
+    con1.close()
+    return v_tag
 
 def ultimos_datos():
     from django.db import connection
@@ -43,7 +65,7 @@ def ultima_fecha(estacion):
 def get_data():
     xmax= ultima_fecha('ise1_infra')
     xmax_ise1_infra = xmax
-    xmin= xmax - timedelta(seconds=30)
+    xmin= xmax - timedelta(seconds=60)
     xmin_ise1_infra = xmin
     df1 = pd.DataFrame(list(ISE1_INFRA.objects.filter(fecha_recepcion__range=(xmin,xmax)).values('fecha_recepcion','infrasonido_1','infrasonido_2','infrasonido_3','infrasonido_4').order_by('fecha_recepcion')))
     df1.infrasonido_1 = df1.infrasonido_1/89771.77326
@@ -63,7 +85,7 @@ def get_data():
 
     xmax= ultima_fecha('ise2_infra')
     xmax_ise2_infra = xmax
-    xmin= xmax - timedelta(seconds=30)
+    xmin= xmax - timedelta(seconds=60)
     xmin_ise2_infra = xmin
     df2 = pd.DataFrame(list(ISE2_INFRA.objects.filter(fecha_recepcion__range=(xmin,xmax)).values('fecha_recepcion','infrasonido_1','infrasonido_2','infrasonido_3','infrasonido_4').order_by('fecha_recepcion')))
     print(df2)
@@ -83,7 +105,7 @@ def get_data():
 #------------
     xmax= ultima_fecha('e1ms1')
     xmax_e1ms1 = xmax
-    xmin= xmax - timedelta(seconds=30)
+    xmin= xmax - timedelta(seconds=60)
     xmin_e1ms1 = xmin
     df3 = pd.DataFrame(list(E1MS1.objects.filter(fecha_recepcion__range=(xmin,xmax)).values('fecha_recepcion','infrasonido_1','infrasonido_2','infrasonido_3','infrasonido_4').order_by('fecha_recepcion')))
 
@@ -203,7 +225,7 @@ def homepage(request):
     #plot.add_layout(legend, 'right')
     plot = gridplot([[p1],[p2],[p3],[p4]])
     script, div = components(plot)
-    
-    return render_to_response('polls/dash.html', {'script1': script1, 'div1': div1,'script2': script2, 'div2': div2,'script3': script3, 'div3': div3 })
+    img1 = ultima_foto()
+    return render_to_response('polls/dash.html', {'script1': script1, 'div1': div1,'script2': script2, 'div2': div2, 'script3': script3, 'div3': div3, 'img1': img1 })
         
 
