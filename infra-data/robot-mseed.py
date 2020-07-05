@@ -43,7 +43,12 @@ try:
     print(date_time)
     print(date_time2)
 
-    Q = '''select fecha_sistema, infrasonido_1, infrasonido_2, infrasonido_3, infrasonido_4, mpu_axe, mpu_aze, mpu_aye, to_char(fecha_recepcion,'ss.ms') tiempo, to_char(fecha_recepcion, 'ss.ms')||' '||infrasonido_1 || ' '|| infrasonido_2 || ' ' || infrasonido_3 || ' ' || infrasonido_4 infra_d, to_char(fecha_recepcion, 'ss.ms') || ' ' || mpu_axe || ' ' || mpu_aye || ' ' || mpu_aze xyz_d, to_char(fecha_recepcion,'YYYY-MM-DD HH24:MI:SS.MS') fecha_recepcion
+    Q = '''select fecha_sistema, 
+                  infrasonido_1, infrasonido_2, infrasonido_3, infrasonido_4, 
+                  mpu_axe, mpu_aze, mpu_aye, 
+                  to_char(fecha_recepcion,'ss.ms') tiempo, 
+                  cast(infrasonido_1 as int) infra_d, 
+                  to_char(fecha_recepcion,'YYYY-MM-DD HH24:MI:SS.MS') fecha_recepcion
      from polls_ise2_infra
 where  fecha_recepcion > (select max(fecha_recepcion) from polls_ise2_infra) - interval '30 minutes'
 order by fecha_recepcion
@@ -53,8 +58,8 @@ order by fecha_recepcion
     cursor.execute(Q)# where estado = 0
     columns = cursor.description
     df = pd.DataFrame(cursor.fetchall())
-    print(df)
-    print(columns)
+#    print(df)
+#    print(columns)
 
             
 except:
@@ -73,7 +78,6 @@ mpu_axe = []
 mpu_aye = []
 mpu_aze = []
 tiempo  = []
-xyz_data = []
 infra_data = []
 fecha_recepcion = []
 linea = 1
@@ -101,29 +105,26 @@ for r in df.iterrows():
     mpu_aze.append(r[1].values[7])
     tiempo.append(r[1].values[8])
     infra_data.append(r[1].values[9])
-    xyz_data.append(r[1].values[10])
-    fecha_recepcion.append(r[1].values[11])
-    infra_string = infra_string + str(r[1].values[1])+'\r\n'
-#print(infra_string)
+    fecha_recepcion.append(r[1].values[10])
+    infra_string = infra_string + str(r[1].values[9])+'\r\n'
+print(infra_string)
 infra_npa = np.fromstring(infra_string, dtype='|S1')
-#print(infra_npa)
-stats = {'network': 'ov', 'station': 'ise2_infra', 'location': '',
-         'channel': 'WLZ', 'npts': len(infra_data), 'sampling_rate': 0.018,
+print(infra_npa)
+stats = {'network': 'GI', 'station': 'ISE2I', 'location': '02','Type':'INTEGER',
+         'channel': 'BDF', 'npts': len(infra_data), 'sampling_rate': 55,
          'mseed': {'dataquality': 'D'}}
 
-stats ={'TIMESERIES': 'GI_ISE2INFRA_01_BDF_D', 'sps': 55, 'Format': 'SLIST', 'Type':'INTEGER', 'Units':'Counts'}
 # set current time
 print(stats)
 print(fecha_recepcion[0])
 date_time_obj = datetime.strptime(fecha_recepcion[0],'%Y-%m-%d %H:%M:%S.%f')
 print(date_time_obj)
 stats['starttime'] = UTCDateTime(date_time_obj)
-stats['samples'] = len(infra_data)
 print(stats)
 st = Stream([Trace(data=infra_npa, header=stats)])
 print(st)
 # write as ASCII file (encoding=0)
-st.write("/home/incyt/Documents/infrasonido.mseed", format='MSEED', encoding=0, reclen=256)
+st.write("/home/incyt/servicio/uploads/infrasonido_1.mseed", format='MSEED', encoding=0, reclen=256)
 
 con.close()
 

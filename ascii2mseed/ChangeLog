@@ -1,0 +1,42 @@
+2017.093: 1.5
+	- Update libmseed to 2.19.3.
+	- Remove dependency on ntwin32.mak for Windows nmake makefiles, now
+	building works in plain MSVC development environments.
+	- Add DEPRECATED notice to Makefile.wat and src/Makefile.wat.
+	- Update licensing to GNU GPL 3.
+
+2015.148: 1.4
+	- Initialize new FDSH memory to zeros for MSRecord template when header
+	flags are present (new feature in 1.2).
+	- Set end time of MSTrace representation of accumulated data, will help
+	in edge cases of sorting the traces properly.
+
+2015.146: 1.3
+	- Update libmseed to 2.16m release.
+	- Add handling of FLOAT64 data, encode as 64-bit doubles.
+
+2015.034: 1.2
+	- Add parsing of optional header values at end of TIMESERIES declaration.
+
+2015.030:
+	- Update libmseed to 2.13 release.
+	- Update packed trace, record and sample counters to 64-bit integers.
+	- Clean up Makefile and src/Makefile, remove old targets.
+
+2013.025: 1.1
+	- Fix handling of non-integer sampling rates for TSPAIR input.  Thanks
+	to K. Anderson for reporting this.
+
+2010.266: 1.0
+	- Update libmseed to 2.5.1 release.
+	- Use libmseed ms_splitsrcname() instead of internal version.
+	- Mark as 1.0.
+
+2009.325: 0.2
+	- Allow sample list data values to be in 1 to 8 columns instead
+	of a fixed 6 columns.
+	- Add details of expected input data files to man page.
+	- Fix memory leaks.
+
+2009.324: 0.1
+	- Initial version.
