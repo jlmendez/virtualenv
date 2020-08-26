@@ -86,32 +86,13 @@ body {
   color: white;
   font-size: 57px;
 }
-
-table {
-	width: 100%;
-	table-layout:fixed;
-	position: relative;
-	padding: 0;
-	margin: 10px auto;
-	height: auto;
-	text-align: center;
-}
-table, th, td {
-	border-collapse: collapse;
-}
-
-th, td {
-	padding:15px;
-	text-align: center;
-}
-
 </style>
 
 		{{ script1 | safe }}
 		{{ script2 | safe }}
 		{{ script3 | safe }}
 </head>
-<div style="background-color:#212121; color:#f2f2f2; text-align: center;">
+<body style="background-color:#212121; color:#f2f2f2; text-align: center;">
 	<div class="topnav" id="mytopnav">
 		<a  class="logolink logo-landivar">
 		<img src="https://incyt.url.edu.gt/wp-content/uploads/2018/01/logo_landivar.png" class="logoimg" alt="INCYT"aling="left"/>
@@ -120,82 +101,61 @@ th, td {
 		<img src="https://incyt.url.edu.gt/wp-content/uploads/2018/01/logo-incyt-vertical.png" width="169" height="83" class="logoimg" alt="INCYT" align="right"/>
 				</a>
                 <a><p style= "font-size:57px; text-align:center">          Observatorio Volcán de Fuego</p></a>
+
 </div>
-<div  style="width:100%; background-color: black;">
-                        <hr>
-                        <div class="container"align="center">
-                        <h1 class="text-center">Huella Infrasónica</h1>
-                        </div>
+
+	<hr>
+	<div class="container"align="center">
+	 <h1 class="text-center">Huella Infrasónica</h1>
+	 <h6 class="text-center">Estacion ISE1_INFRA</h6>
+		{{ div1 | safe }}
+	</div>
+	<hr>
+        <hr>
+        <div class="container"align="center">
+         <h1 class="text-center">Huella Infrasónica</h1>
+         <h6 class="text-center">Estacion ISE2_INFRA</h6>
+                {{ div2 | safe }}
+        </div>
+        <hr>
+        <hr>
+        <div class="container"align="center">
+         <h1 class="text-center">Huella Infrasónica</h1>
+         <h6 class="text-center">Estacion E1MS1</h6>
+                {{ div3 | safe }}
+        </div>
+        <hr>
+
+<table style="width:100%">
+   <tr> 
+      <td>
+        <div class="container" align="center">
+         <h1 class="text-center"> Imagen Infrarroja</h1>
+         <h6 class="text-center"> Estación E1MS1 Acatenango</h6>
+	 {{ img1 | safe}}
+
+        </div>
+
+      </td>
+   </tr>
+</table>
+	<hr>
+
+<div class = "container" align="center">
+	<h1 class = "text-center"> Ultima Actividad registrada </h1>
+	<h6 class = "text-center"> Time Lapse a partir de fotografias fijas </h6>
 	
-<table id="th">
-<tr>
-	<td>
-		</div>
-	 		<h6 class="text-center">Estacion ISE1_INFRA</h6>
-			{{ div1 | safe }}
-		</div>
-	</td>
-</tr>
-<tr>
-	<td>
-         		<h6 class="text-center">Estacion ISE2_INFRA</h6>
-                	{{ div2 | safe }}
-        	</div>
-	</td>
-</tr>
-</table>
-<table>
-<tr>
-	<td>
-		<hr>
-        	<div class="container"align="center">
-         		<h6 class="text-center">Estacion E1MS1</h6>
-                	{{ div3 | safe }}
-        	</div>
-        	<hr>
-	</td>
-</tr>
-</table>
-<table>
-
-<tr> 
-      <td>
-        	<div class="container" align="center">
-         		<h1 class="text-center"> Imagen Infrarroja</h1>
-         		<h6 class="text-center"> Estación E1MS1 Acatenango</h6>
-	 		{{ img1 | safe}}
-
-        	</div>
-
-      </td>
-      <td>
-      		<hr>
-
-		<div class = "container" align="center">
-			<h1 class = "text-center"> Ultima Actividad registrada </h1>
-			<h6 class = "text-center"> Time Lapse a partir de fotografias fijas </h6>
-	
-			<video controls="" autoplay="" name="media"><source src="https://arcgis-web.url.edu.gt/incyt/api/HashFiles/uploads/project.webm" type="video/webm"></video>
-		</div>
-		<hr>
-      </td>
-</tr>
-</table>
-<table>
-<tr>
-      <td>
-      		<div class="container" align="center">
-			<h1 class = "text-center"> Consulta el  playlist en Youtube </h1>
-        		<h6 class = "text-center"> Para ver el registro de actividad pasada </h6>
-
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/_2voSH2_AMg?autoplay=1&autoplay=1&loop=1&playlist=_2voSH2_AMg" frameborder="0" allow="accelerometer; autoplay=1; loop=1; playlist=_2voSH2_AMg; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-		</div>
-		<hr>
-      </td>
-</tr>
-</table>
+	<video controls="" autoplay="" name="media"><source src="https://arcgis-web.url.edu.gt/incyt/api/HashFiles/uploads/project.webm" type="video/webm"></video>
 </div>
+<hr>
+<div class="container" align="center">
+	<h1 class = "text-center"> Consulta el  playlist en Youtube </h1>
+        <h6 class = "text-center"> Para ver el registro de actividad pasada </h6>
+
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/_2voSH2_AMg?autoplay=1&autoplay=1&loop=1&playlist=_2voSH2_AMg" frameborder="0" allow="accelerometer; autoplay=1; loop=1; playlist=_2voSH2_AMg; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+</div>
+<hr>
 <div class="footer">
    <table style="width:100%">
     <tr>
@@ -203,6 +163,9 @@ th, td {
 	<a class="logoimg">
 	<img src="https://incyt.url.edu.gt/wp-content/uploads/2018/01/logo-vrip-inverted.png" class="logoimg" alt="VRIP"/>
 	</a>
+      </td>
+      <td align="right">
+	<p style="font-size:27px;"> Con el apoyo de:&nbsp;&nbsp;</p>
       </td>
       <td align="left">
 	  <img width ="93" height="93" src="https://conred.gob.gt/site/images/logo.png" class="logoimg" alt= "SE-CONRED"/>

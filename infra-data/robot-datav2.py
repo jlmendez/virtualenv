@@ -25,7 +25,7 @@ try:
                            database = "iotgis")
     cursor = con.cursor()
     print("me conecté")
-except (Exception, psycopg2.Error) as error :
+except (Exception, psycopg2.Error) as error:
     print("Error while connection to PostgreSQL",error)
 
 try:

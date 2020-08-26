@@ -1,7 +1,6 @@
 from obspy import read
 import pandas as pd
 import psycopg2
-import numpy as np
 from datetime import datetime, timedelta 
 
 from math import pi
@@ -14,29 +13,12 @@ from bokeh.models import DatetimeTickFormatter
 from bokeh.io import export_png
 from django.views.decorators.clickjacking import xframe_options_exempt
 
-from scipy.signal import butter, lfilter
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 #from django.template import loader
 from django.shortcuts import get_object_or_404, render
 from .models import E1MS1, ISE1_INFRA, ISE2_INFRA
 # Create your views here.
-
-#------------------------------------------------------------
-def butter_bandpass(lowcut, highcut, fs, order=5):
-    nyq = 0.5 * fs
-    low = lowcut / nyq
-    high = highcut / nyq
-    b, a = butter(order, [low, high], btype='band')
-    return b, a
-
-
-def butter_bandpass_filter(data, lowcut, highcut, fs, order=5):
-    b, a = butter_bandpass(lowcut, highcut, fs, order=order)
-    y = lfilter(b, a, data)
-    return y
-#------------------------------------------------------------
-
 
 def ultima_foto():
     try:
@@ -82,20 +64,9 @@ def ultima_fecha(estacion):
     return columna
 
 def get_data():
-    import numpy as np
-    import matplotlib.pyplot as plt
-    from scipy.signal import freqz
-
-    # Sample rate and desired cutoff frequencies (in Hz).
-    fs = 55.0
-    lowcut = 0.5
-    highcut = 25.0
-
-    # Obtener fechas ise1_infra
-
     xmax= ultima_fecha('ise1_infra')
     xmax_ise1_infra = xmax
-    xmin= xmax - timedelta(minutes=60)
+    xmin= xmax - timedelta(seconds=60)
     xmin_ise1_infra = xmin
     df1 = pd.DataFrame(list(ISE1_INFRA.objects.filter(fecha_recepcion__range=(xmin,xmax)).values('fecha_recepcion','infrasonido_1','infrasonido_2','infrasonido_3','infrasonido_4').order_by('fecha_recepcion')))
     df1.infrasonido_1 = df1.infrasonido_1/89771.77326
@@ -103,37 +74,19 @@ def get_data():
     df1.infrasonido_3 = df1.infrasonido_3/89771.77326
     df1.infrasonido_4 = df1.infrasonido_4/89771.77326
     
-    dfa_1 = df1.infrasonido_1
-    npa_1 = dfa_1.to_numpy()
-    dfa_2 = df1.infrasonido_2
-    npa_2 = dfa_2.to_numpy()
-    dfa_3 = df1.infrasonido_3
-    npa_3 = dfa_3.to_numpy()
-    dfa_4 = df1.infrasonido_4
-    npa_4 = dfa_4.to_numpy()
-    y = butter_bandpass_filter(npa_1, lowcut, highcut, fs, order=9)
-    df1.infrasonido_1 = pd.DataFrame(y)
-    y = butter_bandpass_filter(npa_2, lowcut, highcut, fs, order=9)
-    df1.infrasonido_2 = pd.DataFrame(y)
-    y = butter_bandpass_filter(npa_3, lowcut, highcut, fs, order=9)
-    df1.infrasonido_3 = pd.DataFrame(y)
-    y = butter_bandpass_filter(npa_4, lowcut, highcut, fs, order=9)
-    df1.infrasonido_4 = pd.DataFrame(y)
-
-    print(y)
-#    dfa = df1.infrasonido_1
-#    df1.infrasonido_1 = dfa.diff()
-#    dfa = df1.infrasonido_2
-#    df1.infrasonido_2 = dfa.diff()
-#    dfa = df1.infrasonido_3
-#    df1.infrasonido_3 = dfa.diff()
-#    dfa = df1.infrasonido_4
-#    df1.infrasonido_4 = dfa.diff()
+    dfa = df1.infrasonido_1
+    df1.infrasonido_1 = dfa.diff()
+    dfa = df1.infrasonido_2
+    df1.infrasonido_2 = dfa.diff()
+    dfa = df1.infrasonido_3
+    df1.infrasonido_3 = dfa.diff()
+    dfa = df1.infrasonido_4
+    df1.infrasonido_4 = dfa.diff()
 #------------
 
     xmax= ultima_fecha('ise2_infra')
     xmax_ise2_infra = xmax
-    xmin= xmax - timedelta(minutes=60)
+    xmin= xmax - timedelta(seconds=60)
     xmin_ise2_infra = xmin
     df2 = pd.DataFrame(list(ISE2_INFRA.objects.filter(fecha_recepcion__range=(xmin,xmax)).values('fecha_recepcion','infrasonido_1','infrasonido_2','infrasonido_3','infrasonido_4').order_by('fecha_recepcion')))
     print(df2)
@@ -142,32 +95,14 @@ def get_data():
     df2.infrasonido_3 = df2.infrasonido_3/89771.77326
     df2.infrasonido_4 = df2.infrasonido_4/89771.77326
 
-    dfb_1 = df2.infrasonido_1
-    npb_1 = dfb_1.to_numpy()
-    dfb_2 = df2.infrasonido_2
-    npb_2 = dfb_2.to_numpy()
-    dfb_3 = df2.infrasonido_3
-    npb_3 = dfb_3.to_numpy()
-    dfb_4 = df2.infrasonido_4
-    npb_4 = dfb_4.to_numpy()
-    y = butter_bandpass_filter(npb_1, lowcut, highcut, fs, order=9)
-    df2.infrasonido_1 = pd.DataFrame(y)
-    y = butter_bandpass_filter(npb_2, lowcut, highcut, fs, order=9)
-    df2.infrasonido_2 = pd.DataFrame(y)
-    y = butter_bandpass_filter(npb_3, lowcut, highcut, fs, order=9)
-    df2.infrasonido_3 = pd.DataFrame(y)
-    y = butter_bandpass_filter(npb_4, lowcut, highcut, fs, order=9)
-    df2.infrasonido_4 = pd.DataFrame(y)
-
-
-#    dfa = df2.infrasonido_1
-#    df2.infrasonido_1 = dfa.diff()
-#    dfa = df2.infrasonido_2
-#    df2.infrasonido_2 = dfa.diff()
-#    dfa = df2.infrasonido_3
-#    df2.infrasonido_3 = dfa.diff()
-#    dfa = df2.infrasonido_4
-#    df2.infrasonido_4 = dfa.diff()
+    dfa = df2.infrasonido_1
+    df2.infrasonido_1 = dfa.diff()
+    dfa = df2.infrasonido_2
+    df2.infrasonido_2 = dfa.diff()
+    dfa = df2.infrasonido_3
+    df2.infrasonido_3 = dfa.diff()
+    dfa = df2.infrasonido_4
+    df2.infrasonido_4 = dfa.diff()
 #------------
     xmax= ultima_fecha('e1ms1')
     xmax_e1ms1 = xmax
@@ -194,30 +129,27 @@ def get_data():
     return df1, df2, df3, xmin_ise1_infra, xmax_ise1_infra, xmin_ise2_infra, xmax_ise2_infra, xmin_e1ms1, xmax_e1ms1
 
 def get_plot(df, estacion, xmin, xmax):
-    w_plot = 1600
-    h_plot = 150
-    xmin_p= xmax - timedelta(minutes=5)
     source = ColumnDataSource(df)
-    p1 = figure(title = 'Data Sensor 1  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Pascales', x_axis_type='datetime', y_axis_type='linear', plot_width = w_plot, plot_height = h_plot)
-    p1.x_range=Range1d(xmin_p, xmax)
+    p1 = figure(title = 'Data Sensor 1  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Pascales', x_axis_type='datetime', y_axis_type='linear', plot_width = 700, plot_height = 150)
+    p1.x_range=Range1d(xmin, xmax)
 
     l1 = p1.line('fecha_recepcion', 'infrasonido_1', source=source, line_width=2, line_alpha=1, line_color="blue")
 
     if estacion != 'e1ms1':
 
-        p2 = figure(title = 'Data Sensor 2  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Pascales', x_axis_type='datetime', y_axis_type='linear', plot_width = w_plot, plot_height = h_plot)
-        p2.x_range=Range1d(xmin_p, xmax)
+        p2 = figure(title = 'Data Sensor 2  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Pascales', x_axis_type='datetime', y_axis_type='linear', plot_width = 700, plot_height = 150)
+        p2.x_range=Range1d(xmin, xmax)
         l2 = p2.line('fecha_recepcion', 'infrasonido_2', source=source, line_width=2, line_alpha=1, line_color="red")
 
-        p3 = figure(title = 'Data Sensor 3 al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Pascales', x_axis_type='datetime', y_axis_type='linear', plot_width =w_plot, plot_height = h_plot)
+        p3 = figure(title = 'Data Sensor 3 al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Pascales', x_axis_type='datetime', y_axis_type='linear', plot_width = 700, plot_height = 150)
 
-        p3.x_range=Range1d(xmin_p, xmax)
+        p3.x_range=Range1d(xmin, xmax)
 
         l3 = p3.line('fecha_recepcion', 'infrasonido_3', source=source, line_width=2, line_alpha=1, line_color="green")
 
-        p4 = figure(title = 'Data Sensor 4  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Pascales', x_axis_type='datetime', y_axis_type='linear', plot_width = w_plot, plot_height = h_plot)
+        p4 = figure(title = 'Data Sensor 4  al {0}'.format(xmax), x_axis_label = 'Tiempo', y_axis_label = 'Pascales', x_axis_type='datetime', y_axis_type='linear', plot_width = 700, plot_height = 150)
 
-        p4.x_range=Range1d(xmin_p, xmax)
+        p4.x_range=Range1d(xmin, xmax)
 
         l4 = p4.line('fecha_recepcion', 'infrasonido_4', source=source, line_width=2, line_alpha=1, line_color="orange")
 

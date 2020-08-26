@@ -50,16 +50,6 @@ where  fecha_recepcion > (select max(fecha_recepcion) from polls_ise2_infra) - i
     print(df)
     print(columns)
 
-    Q = '''select * from polls_ise1_infra
-where  fecha_recepcion > (select max(fecha_recepcion) from polls_ise2_infra) - interval '60 seconds' '''
-    print("entre al select")
-    print(Q)
-    cursor.execute(Q)# where estado = 0
-    columns = cursor.description
-    df = pd.DataFrame(cursor.fetchall())
-    df.to_csv(r'/home/incyt/servicio/uploads/ise1_infra.csv')
-    print(df)
-    print(columns)
             
 except:
     print('ha ocurrido una excepción Purge 1')
@@ -68,3 +58,25 @@ except:
        
     
     
+img_array = []
+fecha_sistema = []
+infrasonido_1 = []
+infrasonido_2 = []
+infrasonido_3 = []
+infrasonido_4 = []
+
+linea = 1
+for r in df.iterrows():
+    #print('infrasonido_1 {0}'.format(r[1].values[1]))
+    #print('infrasonido_2 {0}'.format(r[1].values[2]))
+    #print('infrasonido_3 {0}'.format(r[1].values[3]))
+    #print('infrasonido_4 {0}'.format(r[1].values[4]))
+
+    fecha_sistema.append(r[1].values[0])
+    infrasonido_1.append(r[1].values[1])
+    infrasonido_2.append(r[1].values[2])
+    infrasonido_3.append(r[1].values[3])
+    infrasonido_4.append(r[1].values[4])
+    number_str = str(linea)
+    linea= linea +1
+
