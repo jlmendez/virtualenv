@@ -110,6 +110,7 @@ th, td {
 		{{ script1 | safe }}
 		{{ script2 | safe }}
 		{{ script3 | safe }}
+		{{ script_j | safe }}
 </head>
 <div style="background-color:#212121; color:#f2f2f2; text-align: center;">
 	<div class="topnav" id="mytopnav">
@@ -129,8 +130,17 @@ th, td {
 	
 <table id="th">
 <tr>
+        <td>
+                <div class="container" align="center">
+                        <h6 class="text-center">ISE2_INFRA infrasonido 1</h6>
+                        {{ div_j | safe }}
+                </div>
+        </td>
+</tr>
+
+<tr>
 	<td>
-		</div>
+		<div>
 	 		<h6 class="text-center">Estacion ISE1_INFRA</h6>
 			{{ div1 | safe }}
 		</div>
@@ -138,23 +148,22 @@ th, td {
 </tr>
 <tr>
 	<td>
+                <div>
          		<h6 class="text-center">Estacion ISE2_INFRA</h6>
                 	{{ div2 | safe }}
         	</div>
 	</td>
 </tr>
-</table>
-<table>
 <tr>
-	<td>
-		<hr>
-        	<div class="container"align="center">
-         		<h6 class="text-center">Estacion E1MS1</h6>
-                	{{ div3 | safe }}
-        	</div>
-        	<hr>
-	</td>
+        <td>
+                <div>
+                        <h6 class="text-center">Estacion E1MS1</h6>
+                        {{ div3 | safe }}
+                </div>
+        </td>
 </tr>
+
+
 </table>
 <table>
 
