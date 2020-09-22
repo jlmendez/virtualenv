@@ -108,7 +108,7 @@ def run():
                     dif_pa = abs((p-a)/(c-a))
                 else:
                     dif_pa = 0
-            if  (abs(c-a) < lim_in[1] or abs(c-a) > lim_su[1]) and (abs(c-p) < lim_in[1] or abs(c-p) > lim_su[1]) and  abs(dif_pa) <0.01:
+            if  (abs(c-a) < lim_in[1] or abs(c-a) > lim_su[1]) and (abs(c-p) < lim_in[1] or abs(c-p) > lim_su[1]) and  abs(dif_pa) <0.02:
                 infrasonido_1[i] =   (infrasonido_1[i-1]+infrasonido_1[i+1])/2
                 Q= ''' update polls_ise2_infra set infrasonido_1 = '{0}', mseed_text = 'f-1,'||mseed_text  where fecha_sistema = '{1}'
                 '''.format(infrasonido_1[i],fecha_sistema[i])
@@ -127,7 +127,7 @@ def run():
                     dif_pa = abs((p-a)/(c-a))
                 else:
                     dif_pa = 0
-            if  (abs(c-a) < lim_in[2] or abs(c-a) > lim_su[2]) and (abs(c-p) < lim_in[2] or abs(c-p) > lim_su[2]) and  abs(dif_pa) <0.01:
+            if  (abs(c-a) < lim_in[2] or abs(c-a) > lim_su[2]) and (abs(c-p) < lim_in[2] or abs(c-p) > lim_su[2]) and  abs(dif_pa) <0.02:
                 infrasonido_2[i] =    (infrasonido_2[i-1]+infrasonido_2[i+1])/2
                 Q= ''' update polls_ise2_infra set infrasonido_2 = '{0}', mseed_text = 'f-2,'||mseed_text where fecha_sistema = '{1}'
                 '''.format(infrasonido_2[i],fecha_sistema[i])
@@ -146,7 +146,7 @@ def run():
                     dif_pa = abs((p-a)/(c-a))
                 else:
                     dif_pa = 0
-            if  (abs(c-a) < lim_in[3] or abs(c-a) > lim_su[3]) and (abs(c-p) < lim_in[3] or abs(c-p) > lim_su[3]) and  abs(dif_pa) <0.01:
+            if  (abs(c-a) < lim_in[3] or abs(c-a) > lim_su[3]) and (abs(c-p) < lim_in[3] or abs(c-p) > lim_su[3]) and  abs(dif_pa) <0.02:
                 infrasonido_3[i] =    (infrasonido_3[i-1]+infrasonido_3[i+1])/2
                 Q= ''' update polls_ise2_infra set infrasonido_3 = '{0}', mseed_text = 'f-3,'||mseed_text  where fecha_sistema = '{1}'
                 '''.format(infrasonido_3[i],fecha_sistema[i])
@@ -165,7 +165,7 @@ def run():
                     dif_pa = abs((p-a)/(c-a))
                 else:
                     dif_pa = 0
-            if  (abs(c-a) < lim_in[4] or abs(c-a) > lim_su[4]) and (abs(c-p) < lim_in[4] or abs(c-p) > lim_su[4]) and  abs(dif_pa) <0.01:
+            if  (abs(c-a) < lim_in[4] or abs(c-a) > lim_su[4]) and (abs(c-p) < lim_in[4] or abs(c-p) > lim_su[4]) and  abs(dif_pa) <0.02:
                 infrasonido_4[i] =   (infrasonido_4[i-1]+infrasonido_4[i+1])/2
                 Q= ''' update polls_ise2_infra set infrasonido_4 = '{0}', mseed_text = 'f-4,'||mseed_text  where fecha_sistema = '{1}'
                 '''.format(infrasonido_4[i],fecha_sistema[i])

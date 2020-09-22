@@ -45,10 +45,10 @@ try:
     print(date_time2)
 
     Q = '''select fecha_sistema, 
-                  cast(infrasonido_1 as int) infra_1, 
-                  cast(infrasonido_2 as int) infra_2,
-                  cast(infrasonido_3 as int) infra_3, 
-                  cast(infrasonido_4 as int) infra_4, 
+                  cast(infrasonido_1/8971.773262 as float) infra_1, 
+                  cast(infrasonido_2/8971.773262 as float) infra_2,
+                  cast(infrasonido_3/8971.773262 as float) infra_3, 
+                  cast(infrasonido_4/8971.773262 as float) infra_4, 
                   mpu_axe, mpu_aze, mpu_aye, 
                   to_char(fecha_recepcion,'ss.ms') tiempo,  
                   to_char(fecha_recepcion,'YYYY-MM-DD HH24:MI:SS.MS') fecha_recepcion,
@@ -110,7 +110,7 @@ for r in df.iterrows():
     delta_fechas.append(r[1].values[11])
 
     if pd.isna(r[1].values[10]) and linea > 1:
-        t_header= 'TIMESERIES GI_ISE2I_01_BDF_D, '+str(linea-1) + ' samples, 55 sps, ' + f_date +'T'+f_time +', SLIST, INTEGER, Counts\r\n'
+        t_header= 'TIMESERIES GI_ISE2I_01_BDF_D, '+str(linea-1) + ' samples, 55 sps, ' + f_date +'T'+f_time +', SLIST, FLOAT, Counts\r\n'
         infra_string = t_header + infra_string
 #        print(infra_string)
         # set current time
@@ -146,7 +146,7 @@ print("termina for")
 #f_date = f_fecha[0:10]
 #f_time = f_fecha[11:23]
 
-t_header= 'TIMESERIES GI_ISE2I_01_BDF_D, '+str(linea-1) + ' samples, 55 sps, ' + f_date +'T'+f_time +', SLIST, INTEGER, Counts\r\n'
+t_header= 'TIMESERIES GI_ISE2I_01_BDF_D, '+str(linea-1) + ' samples, 55 sps, ' + f_date +'T'+f_time +', SLIST, FLOAT, Counts\r\n'
 infra_string = t_header + infra_string
 # set current time
 text_file = open("mseed.txt","w")

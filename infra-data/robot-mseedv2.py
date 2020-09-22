@@ -45,8 +45,8 @@ try:
     print(date_time2)
 
     Q = '''select fecha_sistema, 
-                  cast(infrasonido_1 as int) infra_1, 
-                  cast(infrasonido_2 as int) infra_2,
+                  cast(infrasonido_1/8971.773262 as int) infra_1, 
+                  cast(infrasonido_2/8971.773262 as int) infra_2,
                   cast(infrasonido_3 as int) infra_3, 
                   cast(infrasonido_4 as int) infra_4, 
                   mpu_axe, mpu_aze, mpu_aye, 
@@ -54,12 +54,13 @@ try:
                   to_char(fecha_recepcion,'YYYY-MM-DD HH24:MI:SS.MS') fecha_recepcion
             from polls_ise2_infra
             where  fecha_recepcion > (select max(fecha_recepcion) 
-                                      from polls_ise2_infra) - interval '12 hours'
+                                      from polls_ise2_infra) - interval '4 hours'
             order by fecha_recepcion
         '''
     print("entre al select")       
     print(Q)
     cursor.execute(Q)# where estado = 0
+    print("sali del select")
     columns = cursor.description
     df = pd.DataFrame(cursor.fetchall())
 #    print(df)
@@ -86,6 +87,7 @@ fecha_recepcion = []
 linea = 1
 infra_string = ''
 
+print("inicio for")
 for r in df.iterrows():
     if linea == 1 or linea % 6 ==1:
         v_tab = '      '
@@ -105,9 +107,10 @@ for r in df.iterrows():
     infra_string = infra_string + v_tab+ str(r[1].values[1])
     if linea % 6 == 0:
         infra_string = infra_string + '\r\n'
+#        print("linea {0}".format(linea))
     linea = linea+1
 
-
+print("termina for")
 f_fecha =  fecha_recepcion[0]
 
 f_date = f_fecha[0:10]
